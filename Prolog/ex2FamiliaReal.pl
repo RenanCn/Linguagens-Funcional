@@ -109,17 +109,66 @@ idade(isla,7).
 idade(mia,5).
 idade(lena,0).
 
+%busca pai e mae
 pai(X,Y) :- progen(X,Y),homem(X).
 mae(X,Y) :- progen(X,Y),mulher(X).
 
+%busca filho(a)
 filhoa(X,Y) :- progen(Y,X).
 
+%busca neto(a)
 netoa(X,Y) :- filhoa(X,Z),filhoa(Z,Y).
 
-
-% 1) Qual a idade dos netos da rainha - ok
+% 1) Qual a idade dos netos da rainha?
 %consulta: netoa(X, elizabeth_II),idade(X,A).
+idades_list([X|Y],Z) :- netoa(X,Z),idade(X,Y).
 
-%2) Qual a idade médfia dos netos da rainha - fazendo
-%consulta: 
 
+%2) Qual a idade médfia dos netos da rainha?
+%soma idades
+soma([],0).
+soma([H|T],Z) :- soma(T,I),idade(H,Y), Z is Y+I.
+%quantidade de pessoas
+pessoas([],0).
+pessoas([_|T],Z) :- pessoas(T,I), Z is 1+I.
+%lista retorna média
+media([],0]).
+media(Y,Z):- findall(X, (netoa(X,Y)), A), soma(A, I), pessoas(A,T), Z is I / T.
+
+%3 ncnovo(), precisa passar um vetor com os nomes dos netos de charles
+
+min(A,B,R) :- A =< B, R is A.
+min(A,B,R) :- B =< A, R is B.
+
+comp(A,B,C,D,X,R) :- A =:= C, R = D; B =:= C, R = X.
+
+ncnovo([Y], Y).
+ncnovo([X|Y], T) :- ncnovo(Y, D), idade(D, A), idade(X, B), min(A,B,C), comp(A,B,C,D,X,T).
+
+%4 familiareal(nome do decendente)
+
+familiareal(A) :- pai(elizabeth, A); neto(elizabeth, A); bisneto(elizabeth, A).
+
+%5 maisfilho(), precisa passar um vetor com os nomes de quem quer comparar
+
+max(A,B,R) :- A >= B, R is A.
+max(A,B,R) :- B >= A, R is B.
+
+cont([], 0).
+cont([_|Y], T) :- cont(Y, D), T is D + 1.
+
+achafilho(A, B) :- findall(X, pai(A, X), C), cont(C, B).
+
+maisfilho([Y], Y).
+maisfilho([X|Y], A) :- maisfilho(Y, Z),achafilho(Z, B), achafilho(X, C), max(B,C,R), comp(B,C,R,Z,X,A).
+
+%6 trono(filho, neto, bisneto) na ordem de sucessao
+
+trono(X, Y, Z) :- pai(elizabeth, X), pai(X, Y), pai(Y, Z).
+
+%7 Terceira geração são os filhos dos filhos dos filhos da rainha.
+netoa(X,Y) :- filhoa(X,Z),filhoa(Z,Y).
+
+%8 trono(filho, neto, bisneto) na ordem de sucessao se anne fosse a primogenita
+
+tronoanne(X, Y, Z) :- pai(elizabeth, X), X \= charles, pai(X, Y), pai(Y, Z).
