@@ -31,3 +31,54 @@ maximo :: (Ord a) => [a] -> a
 maximo [] = error "Lista Vazia"
 maximo [x] = x  
 maximo (x:y:xs) = maximo ((if x > y then x else y):xs)
+
+-- Verifica se um objeto pertence à lista
+pertence p [] = False
+pertence p (x:xs) | p==x = True
+                  | otherwise = pertence p xs
+
+-- Adiciona um objeto à lista
+insere c [] = [c]
+insere c (x:xs) | c == x = x:xs
+                | otherwise = x : insere c xs
+
+-- Fibonacci
+--fib :: Integer -> [Integer]
+fib n 
+  | n == 1 = 1
+  | n == 2 = 1
+  | otherwise = fib(n-1) + fib(n-2)
+
+-- Fatorial
+fat n 
+  | n == 0 = 1
+  | otherwise = n*fat(n-1)
+
+-- Concatena duas listas
+concatena (x) (y) = x ++ y
+
+-- Inverte lista
+inverte (x) =  reverse x
+
+-- Verifica se é um palíndromo
+palindromo (x)
+  | x == reverse (x) = True
+  | otherwise = False
+
+
+-- Números primos
+-- Caso base
+isCasoBase :: Int -> Bool
+isCasoBase x
+        | x == 2 = True
+        | otherwise = isPrime x
+
+-- Verifica se é primo
+isPrime :: Int -> Bool
+isPrime x
+          | x >= 2 = ((x `mod` (x-1)) /= 0) && not (isPrime (x-1))
+          | otherwise = False
+
+-- Verifica se os números da lista são primos
+arePrimes :: [Int] -> Bool
+arePrimes = all isCasoBase
