@@ -1,5 +1,19 @@
 -- Haskell
 
+-- Funções simples
+-- Fibonacci
+fib n 
+  | n == 1 = 1
+  | n == 2 = 1
+  | otherwise = fib(n-1) + fib(n-2)
+
+-- Fatorial
+fat n 
+  | n == 0 = 1
+  | otherwise = n*fat(n-1)
+
+
+-- Listas
 -- Tamanho da lista
 tamanho[] = 0
 tamanho(x:xs) = 1 + tamanho xs
@@ -17,8 +31,8 @@ multiplica[] = 1
 multiplica(x:xs) = x * multiplica xs
 
 -- Divide números da lista
-divide[] = 0
-divide(x:xs) = x / multiplica xs
+divide[] = 1
+divide(x:xs) = x / divide xs
 
 -- Elemento mínimo
 minimo :: (Ord a) => [a] -> a 
@@ -41,18 +55,6 @@ pertence p (x:xs) | p==x = True
 insere c [] = [c]
 insere c (x:xs) | c == x = x:xs
                 | otherwise = x : insere c xs
-
--- Fibonacci
---fib :: Integer -> [Integer]
-fib n 
-  | n == 1 = 1
-  | n == 2 = 1
-  | otherwise = fib(n-1) + fib(n-2)
-
--- Fatorial
-fat n 
-  | n == 0 = 1
-  | otherwise = n*fat(n-1)
 
 -- Concatena duas listas
 concatena (x) (y) = x ++ y
@@ -82,3 +84,20 @@ isPrime x
 -- Verifica se os números da lista são primos
 arePrimes :: [Int] -> Bool
 arePrimes = all isCasoBase
+
+-- List Comprehension
+-- Pega os números pares da lista
+lista_pares a = [x | x <- a, par x]
+
+par:: Int -> Bool
+par x = mod x 2 == 0
+
+-- Pega os números ímpares da lista
+lista_impares a = [x | x <-a, impar x]
+impar:: Int-> Bool
+impar x = mod x 2 == 1
+
+-- Fibonacci com mapeamento
+fib2 :: [Int] -> [Int]
+fib2 [] = []
+fib2 (x:xs) = fib x : fib2 xs
