@@ -101,3 +101,9 @@ impar x = mod x 2 == 1
 fib2 :: [Int] -> [Int]
 fib2 [] = []
 fib2 (x:xs) = fib x : fib2 xs
+
+-- ùltimo elemento da lista
+ultimo (x:xs) = last xs
+
+-- primeiro elemento da lista
+primeiro (x:xs) = x!!0
